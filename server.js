@@ -6,8 +6,9 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const Url = require('./schemas/urlModel');
 
+const connectionString = 'mongodb+srv://Bponthemove:Polly7230@cluster0.tsotr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
-mongoose.connect('mongodb://localhost:27017/urlshortener', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('connection open'))
   .catch((err) => console.log(err))
 
@@ -95,6 +96,7 @@ async function getHighestShort() {
       if (results.length !== 0) {
         shortMax = results[0].short_url + 1
       }
+
       return shortMax 
   } catch(err) {
       console.log('catch error server.js function getHighestShort')
