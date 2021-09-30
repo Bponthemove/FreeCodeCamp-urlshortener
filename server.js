@@ -38,7 +38,7 @@ app.get('/api/shorturl/:input', async (req, res) => {
     console.log(input)
     console.log(Url.findOne( {short_url: `${input}`} ))
     const found = await Url.findOne( {short_url: `${input}`} )
-    res.redirect(`https://${found.full_url}`)
+    res.redirect(`https://${found.original_url}`)
   } catch (err) {
       console.log(err)
       console.log(res.status)
@@ -54,13 +54,13 @@ app.post('/api/shorturl/new', async (req, res, next) => {
     } else {
       //find url in db and get json response with the corresponding object. 
       //If it is already in the db, than redirect to this website as asked in tests. 
-        const foundUrl = await Url.findOne( {full_url: `${url}`} )
+        const foundUrl = await Url.findOne( {original_url: `${url}`} )
         if (foundUrl !== null) {
-          res.redirect(`https://${foundUrl.full_url}`)
+          res.redirect(`https://${foundUrl.original_url}`)
         } else {
         //if the url is not there, we''ll create a new entry with that url.
         const short_url = await getHighestShort()
-        const newUrl = await new Url( {full_url: `${url}`,  short_url: `${short_url}`} )
+        const newUrl = await new Url( {original_url: `${url}`,  short_url: `${short_url}`} )
         await newUrl.save()
         res.json(newUrl)
         } 
